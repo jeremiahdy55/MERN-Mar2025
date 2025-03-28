@@ -96,6 +96,34 @@ console.log(mySet.values())
 mySet.clear()
 console.log(mySet.values())
 
+//Test multi-promise functions
+let resolve2 = new Promise((resolve) => setTimeout(() => resolve("resolved after 2 seconds"), 2000))
+let resolve5 = new Promise((resolve) => setTimeout(() => resolve("resolved after 5 seconds"), 5000))
+let reject3 = new Promise((_, reject) => setTimeout(() => reject("rejected after 3 seconds"), 3000))
+let reject4 = new Promise((_, reject) => setTimeout(() => reject("rejected after 4 seconds"), 4000))
+
+// Promise.all() waits for all promises in array to resolve, then uses truth-logic to determine whether .all() returns resolve or reject
+// If any Promise in array rejects, .all() will reject
+Promise.all([resolve2, resolve5]).then((data) => console.log(`1. Promise.all resolved successfully output: ${data}`))
+Promise.all([resolve2, reject4]).catch((data) => console.log(`2. Promise.all rejected output: ${data}`))
+
+// Promise.allSettled() waits for all promises in array to resolve, full stop
+// returns an array of Promise resolves and rejects
+Promise.allSettled([resolve2, resolve5]).then((data) => console.log(`3. Promise.allSettled completed successfully output: ${data}`))
+Promise.allSettled([resolve2, reject3]).then((data) => console.log(`4. Promise.allSettled completed successfully output: ${data}`))
+
+// Promise.race() returns the first promise to SETTLE regardless of resolve or reject
+Promise.race([resolve2, resolve5, reject3, reject4]).then((data) => console.log(`5. Promise.race resolved successfully output: ${data}`))
+Promise.race([resolve5, reject3, reject4]).catch((data) => console.log(`6. Promise.race resolved successfully output: ${data}`))
+
+// Promise.any() returns the first promise to RESOLVE <- read that again
+Promise.any([resolve2, resolve5, reject3, reject4]).then((data) => console.log(`7. Promise.any resolved successfully output: ${data}`))
+Promise.any([resolve5, reject3, reject4]).then((data) => console.log(`8. Promise.any resolved successfully output: ${data}`))
+Promise.any([reject3, reject4]).catch((data) => console.log(`9. Promise.any rejected output: ${data}`))
+
+
+
+
 
 // Async and Await are the keywords used to create a separate thread and the concept comes from the multi-threaded programming languages
 // which evantually creates a separate mini stack to do its execution by using the processor thread
