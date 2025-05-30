@@ -9,6 +9,11 @@ let persons = [
     {id : 5, name : "Alex", tags : "java"}
 ];
 
+
+// filter, map, some , reduce
+
+
+
 //1. List the person with javascript tag
 let javascript_persons = persons.filter(person => person.tags == "javascript")
 console.log(javascript_persons)

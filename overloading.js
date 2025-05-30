@@ -1,4 +1,4 @@
-attendance()
+attendance() //calls hoisted function, outputs[Three sessions were attended today; called function]
 function attendance() {
     console.log("Three sessions were attended today; called function")
 }
