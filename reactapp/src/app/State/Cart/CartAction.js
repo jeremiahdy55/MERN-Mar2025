@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import * as ActionTypes from "../ActionTypes";
 import axios from "axios";
 

@@ -7,8 +7,8 @@ import DisplayProducts from "./DisplayProducts";
 const CartComponent = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const products = useSelector((state) => state.cartReducer.items); // get cart from redux
-    const user = useSelector((state) => state.userReducer.user); // get cart from redux
+    const products = useSelector((state) => state.cartReducer.items); // get store-products from redux
+    const user = useSelector((state) => state.userReducer.user); // get store-user from redux
     console.log("Products in cartComponent is: " + products);
 
     // on mount, do this

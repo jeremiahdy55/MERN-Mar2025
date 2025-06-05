@@ -15,12 +15,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from "./User/UserReducer";
 import productReducer from "./Product/ProductReducer";
 import cartReducer from "./Cart/CartReducer";
+import couponReducer from "./Coupon/CouponReducer";
 
 
 let rootReducer = combineReducers({
     userReducer, //userReducer : userReducer
     productReducer,
-    cartReducer
+    cartReducer,
+    couponReducer
   })
 
 

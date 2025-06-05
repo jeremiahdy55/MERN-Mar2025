@@ -13,6 +13,7 @@ import UserHookComponent from "./ApplicationComponents/User/UserHooksComponent.j
 import ProductComponent from "./ApplicationComponents/Product/ProductComponent.js";
 import CartComponent from "./ApplicationComponents/Cart/CartComponent.js";
 import CheckoutComponent from "./ApplicationComponents/Checkout/CheckoutComponent.js";
+import CouponComponent from "./ApplicationComponents/Coupon/CouponComponent.js";
 
 
 export default class ApplicationComponent extends Component {
@@ -82,6 +83,7 @@ export default class ApplicationComponent extends Component {
                             <Route path="cart" element={<CartComponent />}/>
                             <Route path="checkout" element={<CheckoutComponent />}/>
                             <Route path="payment" element={<CheckoutComponent />}/>
+                            <Route path="coupon" element={<CouponComponent />}/>
 
 
                             {/* <Route path="comp" element={<ComponentTypes />}/> */}
@@ -96,84 +98,3 @@ export default class ApplicationComponent extends Component {
         )
     }
 }
-
-
-
-//create a route for your component with your name
-//navigate with route param with your emailid 
-//use another route param to send your next session details, this should be passed by clicking on botton not with nav-link
-
-//use - useNavigate and useParams hooks to demonstrate the features
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//update life cycle method
-// shouldComponentUpdate(nextProps, nextState){
-   // let name = "Joel", x=5, y = 9;
-    //let sessionName = "MERNStack - React Props"
-//     console.log(nextState) //the updated state version
-//     //console.log(nextProps)
-//     // if (this.state.userName == nextState.userName) {
-//     //     return false //will not invoke render method
-//     // } else {
-//     //     return true
-//     // }
-
-
-//     return true //if we need to call render next
-//     //return false //if we need not to call render next
-// }
-
-
-// <hr />
-//                     <hr />
-//                     <Home />
-//                     <b>{this.state.userName}</b>
-//                     <hr />
-//                     {/* binding event to a button in react component */}
-//                     <button onClick={this.changeUserNameEvent}>Change User Name</button>
-//                     <hr />
-//                     <NotFound />
-//                     <hr />
-
-
-{/* 
-    
-    <h1>This is coming from Application Component</h1>
-                    
-                    <b>{name}</b>
-                    <hr />
-                    <b>Multiply 5*10 = {5*10} </b>
-                    <hr />
-                    <b>Sum 5+9 = {5+9} </b> */}

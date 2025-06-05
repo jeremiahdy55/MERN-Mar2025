@@ -4,9 +4,7 @@ import { connect } from "react-redux"; //helps to connect react component with r
 
 let Header = (props)=>{
     let user = props.user; //reading from mapStateToProps which reads from userReducer.user
-    
-    console.log(user)
-    
+        
     const usrName = user && user.userName ? user.userName : "";
 
     //navigate hook is used to create navigation link on the fly and send the request to given component
@@ -17,7 +15,7 @@ let Header = (props)=>{
 
     return(
         <>
-            {usrName !=""?
+        {   usrName != "" ?
             <h2>Hi {usrName}, {user.mobile} , Welcome to Shopping Cart sponsored by Tech Team SIT</h2>:
             <h2>Welcome to Shopping Cart sponsored by Tech Team SIT,
                 <div><h3>Please click on login button to proceed to login.</h3></div>
@@ -28,9 +26,17 @@ let Header = (props)=>{
                 <NavLink to="/user"  className="button" activeclassname="true"> Login </NavLink>
                 <NavLink to="/userhook"  className="button" activeclassname="true"> Login Hook </NavLink>
                 <NavLink to="/about"  className="button" activeclassname="true"> About </NavLink>
-                <NavLink to="/product"  className="button" activeclassname="true"> Product </NavLink>
-                <NavLink to="/cart"  className="button" activeclassname="true"> Cart </NavLink>
-                <NavLink to="/checkout"  className="button" activeclassname="true"> Checkout </NavLink>
+                {
+                    usrName != "" ?
+                        <>
+                            <NavLink to="/product" className="button" activeclassname="true"> Product </NavLink>
+                            <NavLink to="/cart" className="button" activeclassname="true"> Cart </NavLink>
+                            <NavLink to="/checkout" className="button" activeclassname="true"> Checkout </NavLink>
+                            <NavLink to="/coupon" className="button" activeclassname="true"> Coupon </NavLink>
+                        </> : <></>
+                }
+                
+
 
 
 
