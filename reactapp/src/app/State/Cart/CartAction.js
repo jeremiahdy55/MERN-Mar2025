@@ -34,7 +34,7 @@ export const fetchCart = (userId) => {
             }
         })
         .catch((err)=>{
-            console.log("Error While Saving Cart", err)
+            console.log("Error While Fetching Cart", err)
         });
   };
 };
@@ -105,5 +105,22 @@ return function (dispatch) {
     .catch((error) => {
     console.error("Error saving item to cart:", error);
     });
+  };
 };
-};
+
+// Remove an item from the store cart, only called in checkout page where cart is then saved later
+export const removeItemFromCart = (userId, product) => {
+  return function (dispatch, getState) {
+    const state = getState();
+    const cart = [...state.cartReducer.items]; //make local copy
+    let { name, desc, rating, price, qty, category } = product;
+    const index = cart.findIndex(p => p.name.toString() === name);
+    if (index > -1) { // if the item is in the cart already
+        cart.splice(index, 1) // remove the whole product from the cart
+        // This is NOT decrementing qty
+    } else { // if the item does not exist in the cart yet
+        alert("Trying to remove a nonexistent item!")
+    }
+    dispatch(setCart(userId,cart));
+    }
+}

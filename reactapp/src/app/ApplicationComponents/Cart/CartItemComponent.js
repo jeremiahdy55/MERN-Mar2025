@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {saveItemToStoreCart} from "../../State/Cart/CartAction";
 import { useSelector, useDispatch } from "react-redux";
 
-let ProductItemComponent = ({product, userId})=>{
+let CartItemComponent = ({product, userId})=>{
 
     let [showHide, toggleShowHide] = useState(false)
     let user = useSelector((state) => state.userReducer.user);
@@ -35,4 +35,4 @@ let ProductItemComponent = ({product, userId})=>{
 
 }
 
-export default ProductItemComponent;
+export default CartItemComponent;

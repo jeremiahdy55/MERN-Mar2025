@@ -35,7 +35,6 @@ cartRouter.post("/api/saveCartItem", async (req, res) => {
   // Add to cart or update quantity
 cartRouter.post("/api/saveCartMultipleItems", async (req, res) => {
     const { userId, productsFromStore} = req.body;
-  
     try {
       let cart = await CartModel.findOne({ userId });
     //   let { name, desc, rating, price, qty, category } = product;
@@ -51,15 +50,16 @@ cartRouter.post("/api/saveCartMultipleItems", async (req, res) => {
           items: productList
         });
       } else {
-        for (const product of productsFromStore) {
-            let { name, desc, rating, price, qty, category } = product;
-            const index = cart.items.findIndex(p => p.name.toString() === name);
-            if (index > -1) {
-              cart.items[index].qty += qty;
-            } else {
-              cart.items.push({ name, desc, rating, price, qty, category });
-            }
-        }
+        cart.items = productsFromStore;
+        // for (const product of productsFromStore) {
+        //     let { name, desc, rating, price, qty, category } = product;
+        //     const index = cart.items.findIndex(p => p.name.toString() === name);
+        //     if (index > -1) {
+        //       cart.items[index] = product;
+        //     } else {
+        //       cart.items.push({ name, desc, rating, price, qty, category });
+        //     }
+        // }
       }
       await cart.save();
       res.json(cart);

@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../../State/Cart/CartAction";
+import { saveOrderToDB } from "../../State/Orders/OrderAction";
 import SummaryTableRow from "./SummaryTableRow";
 
 const CheckoutComponent = (props) => {
@@ -20,6 +21,7 @@ const CheckoutComponent = (props) => {
 
     let goToPayment = (evt) => {
         alert("Thank you for the payment, your items are being processed!")
+        dispatch(saveOrderToDB(user._id, new Date(), products))
         navigate("/payment", { state: { hasPaid: true } });
         evt.preventDefault();
     }
@@ -28,8 +30,6 @@ const CheckoutComponent = (props) => {
         return <div></div>
     } else {
         return (
-
-
             <div className="checkout-container">
                 <h3><strong>Order Summary for: {user.userName}</strong></h3>
                 <h5>Order will be delivered to: {user.street}</h5>

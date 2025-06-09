@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCart, saveCartMultipleItems } from "../../State/Cart/CartAction";
+import { fetchCart, removeItemFromCart, saveCartMultipleItems } from "../../State/Cart/CartAction";
 import DisplayProducts from "./DisplayProducts";
 
 const CartComponent = (props) => {
@@ -29,18 +29,39 @@ const CartComponent = (props) => {
             {(!products || products.length === 0) ? (
                 <p>Cart is empty</p>
             ) : (
-                <ul className="cart-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>Rating</th>
+                            <th>Category</th>
+                            <th>Delete Item</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {products.map((item, index) => (
-                        <li key={index} className="cart-item">
-                            <div><h4>Quantity: {item.qty}</h4></div>
-                            <div><strong>{item.name}</strong></div>
-                            <div>Price: ${item.price}</div>
-                            <div>Desc: {item.desc}</div>
-                            <div>Rating: {item.rating}</div>
-                            <div>Category: {item.category}</div>
-                        </li>
+                        <tr key={index} className="cart-item">
+                            <td><strong>{item.name}</strong></td>
+                            <td>{item.qty}</td>
+                            <td>{item.price}</td>
+                            <td>{item.desc}</td>
+                            <td>{item.rating}</td>
+                            <td>{item.category}</td>
+                            <td>
+                                <button 
+                                    style={{ backgroundColor: 'rgb(170, 4, 4)' }}
+                                    onClick={()=>dispatch(removeItemFromCart(user._id, item))}
+                                >
+                                Remove
+                                </button>
+                            </td>
+                        </tr>
                     ))}
-                </ul>
+                    </tbody>
+                </table>
             )}
             <button onClick={goToCheckout}>Checkout</button>
 

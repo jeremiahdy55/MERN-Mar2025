@@ -13,6 +13,9 @@ const productApp = express();
 const cartRoute = require("./route/cartRoute")
 const cartApp = express();
 
+const orderRoute = require("./route/orderRoute")
+const orderApp = express();
+
 const cors = require("cors");
 
 
@@ -36,9 +39,13 @@ userApp.use("/", userRoute)
 app.use("/product", productApp) 
 productApp.use("/", productRoute)
 
-// For product DB, use /cart paths
+// For cart DB, use /cart paths
 app.use("/cart", cartApp) 
 cartApp.use("/", cartRoute)
+
+// order DB, use /orders paths
+app.use("/orders", orderApp) 
+orderApp.use("/", orderRoute)
 
 app.use("/", deafultApp) //=>  app.use("/student", studentApp) 
 deafultApp.use("/", defaultRoute) //redirecting all requests to default route to get served
