@@ -1,5 +1,6 @@
 import * as ActionTypes from "../ActionTypes";
 import axios from "axios";
+import { setCart } from "../Cart/CartAction";
 
 // Action to set the state of the orderReducer in redux-store
 export const setOrders = (userId, orders) => ({
@@ -21,7 +22,7 @@ export const fetchOrders = (userId) => {
             if (orderData) {
                 const orders = [];
                 for (const order of orderData) {
-                    orders.push({_id: order._id, orderDate: order.orderDate, cart: order.cart});
+                    orders.push({_id: order._id, orderDate: order.orderDate, cart: order.cart, canceled: order.canceled});
                 }
                 dispatch(setOrders(userId, orders));
               } else {
@@ -46,7 +47,7 @@ export const saveOrderToDB = (userId, orderDate, cart) => {
         const updatedOrders = response.data;
         const orders = [];
         for (const order of updatedOrders) {
-            orders.push({_id: order._id, orderDate: order.orderDate, cart: order.cart});
+            orders.push({_id: order._id, orderDate: order.orderDate, cart: order.cart, canceled: order.canceled});
         }
         dispatch(setOrders(userId, orders));
       })
@@ -72,7 +73,7 @@ export const cancelOrderInDB = (userId, orderId, orderDateString) => {
                 const updatedOrders = response.data;
                 const orders = [];
                 for (const order of updatedOrders) {
-                    orders.push({_id: order._id, orderDate: order.orderDate, cart: order.cart});
+                    orders.push({_id: order._id, orderDate: order.orderDate, cart: order.cart, canceled: order.canceled});
                 }
                 dispatch(setOrders(userId, orders));
               })
@@ -84,3 +85,4 @@ export const cancelOrderInDB = (userId, orderId, orderDateString) => {
         }
     }
 }
+

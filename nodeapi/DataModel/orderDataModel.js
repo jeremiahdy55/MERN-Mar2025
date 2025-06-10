@@ -11,12 +11,14 @@ let orderSchema = new schemaObj({
         {
             name: { type: String, required: true },
             desc: { type: String, required: true },
-            rating: { type: String, default: "Not rated" },
             price: { type: String, default: "FREE!" },
             qty: { type: Number, default: 1 },
-            category: { type: String, default: "Default category" }
+            category: { type: String, default: "Default category" },
+            rating: { type: String, default: "User has not rated" },
+            review: {type: String, required: false}
         }
-    ]      
+    ],
+    canceled: {type: Boolean, default: false}    
     },
     {
         versionKey: false //false - set to false then it wont create in mongodb, don't set it to true, if you want _v just dont add this

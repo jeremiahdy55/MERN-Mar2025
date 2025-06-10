@@ -22,9 +22,17 @@ orderRouter.post("/api/saveOrder", async (req, res) => {
 orderRouter.post("/api/cancelOrder", async (req, res) => {
     try {
         const { userId, orderId } = req.body;
-        const result = await OrderModel.findByIdAndDelete(orderId);
-        if (!result) console.log('Order not found')
-        else console.log('Order deleted');
+        const order = await OrderModel.findByIdAndUpdate(orderId, { canceled: true });
+        // if (!order) console.log('Order not found')
+        // else {
+        //     console.log('Canceling order');
+        //     order.canceled = true;
+        //     try{
+        //         await order.save();
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        // }
         const orders = await OrderModel.find({ userId })
         res.json(orders);
     } catch (err) {
@@ -41,5 +49,16 @@ try {
     res.status(500).send("Error retrieving orders");
 }
 });
+
+// Get orders for this user
+orderRouter.get("/api/getOrder/:orderId", async (req, res) => {
+    try {
+        const order = await OrderModel.findById({ _id: req.params.orderId })
+        console.log(order)
+        res.json(order);
+    } catch (err) {
+        res.status(500).send("Error retrieving order in reorder API GET");
+    }
+    });
 
 module.exports = orderRouter;

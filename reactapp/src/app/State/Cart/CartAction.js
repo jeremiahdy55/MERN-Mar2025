@@ -124,3 +124,31 @@ export const removeItemFromCart = (userId, product) => {
     dispatch(setCart(userId,cart));
     }
 }
+
+export const repopulateCartWithOrder = (userId, orderId) => {
+  return function (dispatch) {
+      axios.get(`http://localhost:9000/orders/api/getOrder/${orderId}`)
+          .then((response) => {
+              const order = response.data;
+              // dispatch(setCart(userId, order.cart.map(p => ({
+              //     name: p.name,
+              //     desc: p.desc,
+              //     rating: p.rating,
+              //     price: p.price,
+              //     qty: p.qty,
+              //     category: p.category
+              // }))));
+              dispatch(saveCartMultipleItems(userId, order.cart.map(p => ({
+                    name: p.name,
+                    desc: p.desc,
+                    rating: p.rating,
+                    price: p.price,
+                    qty: p.qty,
+                    category: p.category
+                }))));
+          })
+          .catch((error) => {
+              console.error("Error saving and retrieving orders:", error);
+          });
+  }
+}
