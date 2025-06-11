@@ -1,6 +1,5 @@
 import * as ActionTypes from "../ActionTypes";
 import axios from "axios";
-import { setCart } from "../Cart/CartAction";
 
 // Action to set the state of the orderReducer in redux-store
 export const setOrders = (userId, orders) => ({

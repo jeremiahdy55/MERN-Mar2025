@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {saveCartItem} from "../../State/Cart/CartAction";
 import { useSelector, useDispatch } from "react-redux";
 
 let ProductItemComponent = ({product, userId})=>{
 
+    console.log({product})
+
+    const navigate=useNavigate();
     let [showHide, toggleShowHide] = useState(false)
     let user = useSelector((state) => state.userReducer.user);
 
@@ -29,6 +33,7 @@ let ProductItemComponent = ({product, userId})=>{
                     <li>Product _id: {product._id}</li>
                     {/* <li>{user._id}</li> */}
                     <button onClick={()=>dispatch(saveCartItem(user._id, product))} >Add Item</button>
+                    <button onClick={()=>navigate("/reviews", { state: { refModel: 'product', refObj: product._id } })}>See Product Reviews</button>
                 </ul>
                  : <div></div>} 
             </li>

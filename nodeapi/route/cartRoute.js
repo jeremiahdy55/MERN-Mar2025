@@ -8,19 +8,19 @@ cartRouter.post("/api/saveCartItem", async (req, res) => {
   
     try {
       let cart = await CartModel.findOne({ userId });
-      let { name, desc, rating, price, qty, category } = product;
+      let { productId, name, desc, rating, price, qty, category } = product;
   
       if (!cart) {
         cart = new CartModel({
           userId,
-          items: [{ name, desc, rating, price, qty, category }]
+          items: [{ productId, name, desc, rating, price, qty, category }]
         });
       } else {
         const index = cart.items.findIndex(p => p.name.toString() === name);
         if (index > -1) {
           cart.items[index].qty += qty;
         } else {
-          cart.items.push({ name, desc, rating, price, qty, category });
+          cart.items.push({ productId, name, desc, rating, price, qty, category });
         }
       }
         await cart.save();
@@ -42,8 +42,8 @@ cartRouter.post("/api/saveCartMultipleItems", async (req, res) => {
       if (!cart) {
         let productList = []
         for (const product of productsFromStore) {
-            let { name, desc, rating, price, qty, category } = product;
-            productList.push({ name, desc, rating, price, qty, category });
+            let { productId, name, desc, rating, price, qty, category } = product;
+            productList.push({ productId, name, desc, rating, price, qty, category });
         }
         cart = new CartModel({
           userId,

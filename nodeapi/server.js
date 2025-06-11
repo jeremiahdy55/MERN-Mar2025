@@ -2,7 +2,7 @@ let express = require('express')
 const app = express() //when we invoke it creates an express application which helps to build a web server
 
 const defaultRoute = require("./route/defaultRoute")
-const deafultApp = express();
+const defaultApp = express();
 
 const userRoute = require("./route/userRoute")
 const userApp = express();
@@ -15,6 +15,9 @@ const cartApp = express();
 
 const orderRoute = require("./route/orderRoute")
 const orderApp = express();
+
+const reviewsRoute = require("./route/reviewsRoute")
+const reviewsApp = express();
 
 const cors = require("cors");
 
@@ -47,8 +50,12 @@ cartApp.use("/", cartRoute)
 app.use("/orders", orderApp) 
 orderApp.use("/", orderRoute)
 
-app.use("/", deafultApp) //=>  app.use("/student", studentApp) 
-deafultApp.use("/", defaultRoute) //redirecting all requests to default route to get served
+// order DB, use /orders paths
+app.use("/reviews", reviewsApp) 
+reviewsApp.use("/", reviewsRoute)
+
+app.use("/", defaultApp)
+defaultApp.use("/", defaultRoute) //redirecting all requests to default route to get served
 
 
 console.log("Rest API is listening at 9000")

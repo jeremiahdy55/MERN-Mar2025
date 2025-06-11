@@ -21,12 +21,13 @@ export const fetchCart = (userId) => {
             let cart = response.data;
             if (cart) {
                 dispatch(setCart(cart.userId, cart.items.map(p => ({
-                name: p.name,
-                desc: p.desc,
-                rating: p.rating,
-                price: p.price,
-                qty: p.qty,
-                category: p.category
+                  productId: p.productId,
+                  name: p.name,
+                  desc: p.desc,
+                  rating: p.rating,
+                  price: p.price,
+                  qty: p.qty,
+                  category: p.category
                 }))));
             } else {
                 // If no cart, clear redux-store of any cart data
@@ -49,6 +50,7 @@ export const saveCartItem = (userId, product) => {
       .then((response) => {
         const updatedCart = response.data;
         dispatch(setCart(updatedCart.userId, updatedCart.items.map(p => ({
+          productId: p.productId,
           name: p.name,
           desc: p.desc,
           rating: p.rating,
@@ -69,12 +71,15 @@ export const saveItemToStoreCart = (userId, product) => {
 return function (dispatch, getState) {
     const state = getState();
     const cart = [...state.cartReducer.items]; //make local copy
-    let { name, desc, rating, price, qty, category } = product;
+    console.log(product)
+    let {name, desc, rating, price, qty, category } = product;
+    let productId = product._id
+    console.log("productId" + productId)
     const index = cart.findIndex(p => p.name.toString() === name);
     if (index > -1) {
         cart[index] = {...cart[index], qty: cart[index].qty + qty};
     } else {
-        cart.push({ name, desc, rating, price, qty, category });
+        cart.push({ productId, name, desc, rating, price, qty, category });
     }
     dispatch(setCart(userId,cart));
     }
@@ -94,6 +99,7 @@ return function (dispatch) {
     dispatch(setCart(updatedCart.userId, updatedCart.items.map(p => ({
     //   productId: p.productId._id || p.productId,
     //   quantity: p.quant\ity
+        productId: p.productId,
         name: p.name,
         desc: p.desc,
         rating: p.rating,
@@ -139,6 +145,7 @@ export const repopulateCartWithOrder = (userId, orderId) => {
               //     category: p.category
               // }))));
               dispatch(saveCartMultipleItems(userId, order.cart.map(p => ({
+                    productId: p.productId,
                     name: p.name,
                     desc: p.desc,
                     rating: p.rating,

@@ -8,6 +8,7 @@ let cartSchema = new schemaObj({
     userId: { type: mongooseObj.Schema.Types.ObjectId, ref: 'user', required: true },
     items:[
         {
+            productId: { type: mongooseObj.Schema.Types.ObjectId, ref: 'user', required: true },
             name : {type: String, required : true},
             desc: {type:String, required : true},
             rating: {type:String, default:"Not rated"},

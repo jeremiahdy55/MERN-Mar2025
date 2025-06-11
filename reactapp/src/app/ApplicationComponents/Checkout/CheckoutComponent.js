@@ -6,7 +6,6 @@ import { saveOrderToDB } from "../../State/Orders/OrderAction";
 import SummaryTableRow from "./SummaryTableRow";
 
 const CheckoutComponent = (props) => {
-    let [showHide, toggleShowHide] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
@@ -21,7 +20,7 @@ const CheckoutComponent = (props) => {
 
     let goToPayment = (evt) => {
         alert("Thank you for the payment, your items are being processed!")
-        dispatch(saveOrderToDB(user._id, new Date(), products))
+        dispatch(saveOrderToDB(user._id, new Date("2024-04-04"), products))
         navigate("/payment", { state: { hasPaid: true } });
         evt.preventDefault();
     }

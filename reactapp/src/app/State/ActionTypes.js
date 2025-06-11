@@ -7,3 +7,4 @@ export const CLEAR_CART = "CLEAR_CART";
 export const SET_COUPON = "SET_COUPON";
 export const SET_ORDERS = "SET_ORDERS";
 export const CLEAR_ORDERS = "CLEAR_ORDERS";
+export const SET_REVIEWS = "SET_REVIEWS";

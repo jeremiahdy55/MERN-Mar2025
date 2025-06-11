@@ -9,13 +9,13 @@ let orderSchema = new schemaObj({
     orderDate: { type: Date, required: true },
     cart: [
         {
+            productId: { type: mongooseObj.Schema.Types.ObjectId, ref: 'user', required: true },
             name: { type: String, required: true },
             desc: { type: String, required: true },
             price: { type: String, default: "FREE!" },
             qty: { type: Number, default: 1 },
             category: { type: String, default: "Default category" },
             rating: { type: String, default: "User has not rated" },
-            review: {type: String, required: false}
         }
     ],
     canceled: {type: Boolean, default: false}    

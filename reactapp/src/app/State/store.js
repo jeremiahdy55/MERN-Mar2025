@@ -17,6 +17,7 @@ import productReducer from "./Product/ProductReducer";
 import cartReducer from "./Cart/CartReducer";
 import couponReducer from "./Coupon/CouponReducer";
 import orderReducer from "./Orders/OrderReducer";
+import reviewsReducer from "./Reviews/ReviewsReducer";
 
 
 let rootReducer = combineReducers({
@@ -24,7 +25,8 @@ let rootReducer = combineReducers({
     productReducer,
     cartReducer,
     couponReducer,
-    orderReducer
+    orderReducer,
+    reviewsReducer
   })
 
 

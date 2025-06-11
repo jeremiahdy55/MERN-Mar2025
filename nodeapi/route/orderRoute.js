@@ -23,16 +23,6 @@ orderRouter.post("/api/cancelOrder", async (req, res) => {
     try {
         const { userId, orderId } = req.body;
         const order = await OrderModel.findByIdAndUpdate(orderId, { canceled: true });
-        // if (!order) console.log('Order not found')
-        // else {
-        //     console.log('Canceling order');
-        //     order.canceled = true;
-        //     try{
-        //         await order.save();
-        //     } catch (err) {
-        //         console.log(err);
-        //     }
-        // }
         const orders = await OrderModel.find({ userId })
         res.json(orders);
     } catch (err) {
