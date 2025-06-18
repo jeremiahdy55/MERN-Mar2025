@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import ReviewTableRow from "./ReviewTableRow";
 import { fetchReviews, fetchReviewsByObjId } from "../../State/Reviews/ReviewsAction";
 
-const ReviewComponent = () => {
+const ReviewComponent = (props) => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const refModel = location.state?.refModel ?? undefined;
-    const refObj = location.state?.refObj ?? undefined;
+    const refModel = location.state?.refModel ?? localStorage.getItem("refModel");
+    const refObj = location.state?.refObj ?? JSON.parse(localStorage.getItem("refObj"));
 
     console.log("refNodel" + refModel)
     console.log("refObj" + refObj)
@@ -19,18 +19,53 @@ const ReviewComponent = () => {
     const user = useSelector((state) => state.userReducer.user); // get user from redux
     const reviews = useSelector((state) => state.reviewsReducer.reviews);// get reviews from redux-store
     const userName = user?.userName ? user.userName : undefined;
-    
+    const refObjName = reviews?.[0]?.refObj?.name ? reviews[0].refObj.name : undefined;
+    const refObjOrderDate = reviews?.[0]?.refObj?.orderDate ? reviews[0].refObj.orderDate : undefined;
+
+    // If the refObjName exists, then this is loaded for product, and show product name
+    // If the refObjOrderDate exists, then this is loaded for order, and show order date
+    // If neither, then this gets the default value of both, which is undefined
+    const refObjPageHeader = (refObjName) ? refObjName : refObjOrderDate;
+
+    // Set the values if they exist
+    // emulates componentDidUpdate()
     useEffect(() => {
-        if (refObj) {
+        if (location.state?.refModel && location.state?.refObj) {
+            localStorage.setItem("refModel", location.state.refModel);
+            localStorage.setItem("refObj", JSON.stringify(location.state.refObj));
+        }
+    }, [location.state]);
+
+    // emulates componentDidUpdate()
+    useEffect(() => {
+        if (refModel && refObj) {
+            console.log("hit fetchReviewsByObjId")
             dispatch(fetchReviewsByObjId(refObj))
         } else {
+            console.log("hit fetchReviewsByUserId")
             dispatch(fetchReviews(user._id));
         }
-    }, [dispatch, user._id, refObj]);
+    }, [dispatch, refObj]);
+
+    // Emulate componentDidUnmount()
+    useEffect(() => {
+        const handleUnload = () => {
+            localStorage.removeItem("refModel");
+            localStorage.removeItem("refObj");
+        };
+    
+        window.addEventListener("beforeunload", handleUnload);
+    
+        return () => {
+            // Fires on component unmount (e.g., navigation within SPA)
+            handleUnload();
+            window.removeEventListener("beforeunload", handleUnload);
+        };
+    }, []);
 
     return (
         <div className="reviews-container">
-            <h3><strong>Reviews for: {(refObj) ?  refObj : userName}</strong></h3>
+            <h3><strong>Reviews for: {(refObj && reviews && reviews.length > 0 && refObjPageHeader) ?  refObjPageHeader: userName}</strong></h3>
             {
                 reviews && reviews.length > 0 ?
                     (<div><table>

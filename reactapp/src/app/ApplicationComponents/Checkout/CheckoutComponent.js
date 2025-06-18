@@ -20,7 +20,7 @@ const CheckoutComponent = (props) => {
 
     let goToPayment = (evt) => {
         alert("Thank you for the payment, your items are being processed!")
-        dispatch(saveOrderToDB(user._id, new Date("2024-04-04"), products))
+        dispatch(saveOrderToDB(user._id, new Date(), products))
         navigate("/payment", { state: { hasPaid: true } });
         evt.preventDefault();
     }

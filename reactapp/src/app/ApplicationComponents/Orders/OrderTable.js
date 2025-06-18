@@ -12,6 +12,9 @@ let OrderTable = ({userId, order})=>{
     const daysApart = (today - orderDate) / (1000 * 60 * 60 * 24);
     const inProgress = !order.canceled && daysApart < 2
     const cancelStr = order.canceled ? "Canceled" : "Finished"
+    console.log(daysApart)
+
+    console.log(inProgress)
     // console.log("daysApart" + daysApart)
     // console.log("order.canceled" + order.canceled)
     // console.log("inProgress" +  inProgress)
@@ -44,7 +47,7 @@ let OrderTable = ({userId, order})=>{
                     onClick={() => dispatch(cancelOrderInDB(userId, order._id, order.orderDate))}>
                     Cancel Order
                 </button> :
-                <ReviewModal userId={userId} refModel="orders" refObj={order._id}/>
+                <ReviewModal userId={userId} refModel='orders' refObj={order._id}/>
             }
         </div>
     )

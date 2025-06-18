@@ -15,6 +15,7 @@ let ReviewModal = ({userId, refModel, refObj})=>{
         //creating product data model to be saved in db using product api  
         setShowModal(false);
         dispatch(saveReview(userId, refModel, refObj, reviewContent));
+        navigate("/reviews", { state: { refModel: refModel, refObj: refObj } });
         evt.preventDefault();
       }
 
