@@ -19,6 +19,9 @@ const orderApp = express();
 const reviewsRoute = require("./route/reviewsRoute")
 const reviewsApp = express();
 
+const notificationsRoute = require("./route/notificationsRoute")
+const notificationsApp = express();
+
 const cors = require("cors");
 
 
@@ -50,9 +53,13 @@ cartApp.use("/", cartRoute)
 app.use("/orders", orderApp) 
 orderApp.use("/", orderRoute)
 
-// order DB, use /orders paths
+// reviews DB, use /reviews paths
 app.use("/reviews", reviewsApp) 
 reviewsApp.use("/", reviewsRoute)
+
+// notifications DB, use /notifications paths
+app.use("/notifications", notificationsApp) 
+notificationsApp.use("/", notificationsRoute)
 
 app.use("/", defaultApp)
 defaultApp.use("/", defaultRoute) //redirecting all requests to default route to get served

@@ -1,5 +1,6 @@
 import * as ActionTypes from "../ActionTypes";
 import axios from "axios";
+import { saveNotification } from "../Notifications/NotificationsAction";
 
 // Action to set the entire cart (e.g., load cart from server)
 export const setCart = (userId, items) => ({
@@ -42,11 +43,11 @@ export const fetchCart = (userId) => {
 
 // Save single cart item, this is accessible from ProductItemComponent.js
 export const saveCartItem = (userId, product) => {
-    return function (dispatch) {
-      axios.post(`http://localhost:9000/cart/api/saveCartItem`, {
-        userId,
-        product
-      })
+  return function (dispatch) {
+    axios.post(`http://localhost:9000/cart/api/saveCartItem`, {
+      userId,
+      product
+    })
       .then((response) => {
         const updatedCart = response.data;
         dispatch(setCart(updatedCart.userId, updatedCart.items.map(p => ({
@@ -58,12 +59,18 @@ export const saveCartItem = (userId, product) => {
           qty: p.qty,
           category: p.category
         }))));
+        const totalItems = updatedCart.items.reduce((sum, product) => sum + product.qty, 0)
+        dispatch(saveNotification(userId, {
+          content: `${product.name} was saved to Cart. Total items: ${totalItems}`,
+          type: "dynamic",
+          navigateTo: "/cart"
+        }));
       })
       .catch((error) => {
         console.error("Error saving item to cart:", error);
       });
-    };
   };
+};
 
 // Saves the product to the redux-store ONLY (does not go to MongoDB)
 // Accessible from CartItemComponent.js
@@ -88,29 +95,33 @@ return function (dispatch, getState) {
 // Saves the current redux-store cart-state to MongoDB
 // Accessible from CartComponent.js (checkout button)
 export const saveCartMultipleItems = (userId, products) => {
-console.log(products)
-return function (dispatch) {
+  console.log(products)
+  return function (dispatch) {
     axios.post(`http://localhost:9000/cart/api/saveCartMultipleItems`, {
-    userId,
-    productsFromStore: products
+      userId,
+      productsFromStore: products
     })
-    .then((response) => {
-    const updatedCart = response.data;
-    dispatch(setCart(updatedCart.userId, updatedCart.items.map(p => ({
-    //   productId: p.productId._id || p.productId,
-    //   quantity: p.quant\ity
-        productId: p.productId,
-        name: p.name,
-        desc: p.desc,
-        rating: p.rating,
-        price: p.price,
-        qty: p.qty,
-        category: p.category
-    }))));
-    })
-    .catch((error) => {
-    console.error("Error saving item to cart:", error);
-    });
+      .then((response) => {
+        const updatedCart = response.data;
+        dispatch(setCart(updatedCart.userId, updatedCart.items.map(p => ({
+          productId: p.productId,
+          name: p.name,
+          desc: p.desc,
+          rating: p.rating,
+          price: p.price,
+          qty: p.qty,
+          category: p.category
+        }))));// end dispatch(setCart())
+        const totalItems = updatedCart.items.reduce((sum, product) => sum + product.qty, 0)
+        dispatch(saveNotification(userId, {
+          content: `Multiple items simultaneously saved to Cart. Total items: ${totalItems}`,
+          type: "dynamic",
+          navigateTo: "/cart"
+        })); // end dispatch(saveNotification())
+      })
+      .catch((error) => {
+        console.error("Error saving item to cart:", error);
+      });
   };
 };
 
@@ -133,29 +144,27 @@ export const removeItemFromCart = (userId, product) => {
 
 export const repopulateCartWithOrder = (userId, orderId) => {
   return function (dispatch) {
-      axios.get(`http://localhost:9000/orders/api/getOrder/${orderId}`)
-          .then((response) => {
-              const order = response.data;
-              // dispatch(setCart(userId, order.cart.map(p => ({
-              //     name: p.name,
-              //     desc: p.desc,
-              //     rating: p.rating,
-              //     price: p.price,
-              //     qty: p.qty,
-              //     category: p.category
-              // }))));
-              dispatch(saveCartMultipleItems(userId, order.cart.map(p => ({
-                    productId: p.productId,
-                    name: p.name,
-                    desc: p.desc,
-                    rating: p.rating,
-                    price: p.price,
-                    qty: p.qty,
-                    category: p.category
-                }))));
-          })
-          .catch((error) => {
-              console.error("Error saving and retrieving orders:", error);
-          });
+    axios.get(`http://localhost:9000/orders/api/getOrder/${orderId}`)
+      .then((response) => {
+        const order = response.data;
+        dispatch(saveCartMultipleItems(userId, order.cart.map(p => ({
+          productId: p.productId,
+          name: p.name,
+          desc: p.desc,
+          rating: p.rating,
+          price: p.price,
+          qty: p.qty,
+          category: p.category
+        }))));
+        const totalItems = order.cart.reduce((sum, product) => sum + product.qty, 0)
+        dispatch(saveNotification(userId, {
+          content: `Additional notification: Multiple items simultaneously saved to Cart due to Reorder. Total items: ${totalItems}`,
+          type: "dynamic",
+          navigateTo: "/cart"
+        })); // end dispatch(saveNotification())
+      })
+      .catch((error) => {
+        console.error("Error saving and retrieving orders:", error);
+      });
   }
 }

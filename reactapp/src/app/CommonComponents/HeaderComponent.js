@@ -1,6 +1,7 @@
 import React from "react"; // this is responsible to parse the JSX code
 import { NavLink, useNavigate } from "react-router-dom";
 import { connect } from "react-redux"; //helps to connect react component with redux store
+import NotificationButton from "../ApplicationComponents/Notification/NotificationButton";
 
 let Header = (props)=>{
     let user = props.user; //reading from mapStateToProps which reads from userReducer.user
@@ -49,6 +50,7 @@ let Header = (props)=>{
                 {/* <NavLink to="/about/2025"  className="button" activeclassname="true"> About </NavLink> */}
                 {/* <NavLink to="/about/2025/dat"  className="button" activeclassname="true"> About </NavLink> */}
             </div>
+            { usrName != "" ? <NotificationButton/> : <></>}
 
             {/* <button onClick={navigateWithName} >About With Name</button> */}
         </>

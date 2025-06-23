@@ -1,5 +1,6 @@
 import * as ActionTypes from "../ActionTypes";
 import axios from "axios";
+import { saveNotification } from "../Notifications/NotificationsAction";
 
 // Action to set the state of the orderReducer in redux-store
 export const setOrders = (userId, orders) => ({
@@ -11,7 +12,6 @@ export const setOrders = (userId, orders) => ({
 export const clearOrders = () => ({
     type: ActionTypes.CLEAR_ORDERS
 });
-
 
 export const fetchOrders = (userId) => {
     return function (dispatch) {
@@ -75,6 +75,11 @@ export const cancelOrderInDB = (userId, orderId, orderDateString) => {
                     orders.push({_id: order._id, orderDate: order.orderDate, cart: order.cart, canceled: order.canceled});
                 }
                 dispatch(setOrders(userId, orders));
+                dispatch(saveNotification(userId, {
+                          content: `Canceled Order ${orderId}`,
+                          type: "dynamic",
+                          navigateTo: "/orders"
+                        })); // end dispatch(saveNotification())
               })
               .catch((error) => {
                 console.error("Error saving and retrieving orders:", error);

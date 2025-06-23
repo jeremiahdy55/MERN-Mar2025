@@ -40,14 +40,4 @@ reviewsRouter.get("/api/getReviewByObjId/:ObjId", async (req, res) => {
     }
     });
 
-// reviewsRouter.get("/api/getReviewByOrderId/:orderId", async (req, res) => {
-//     try {
-//         const review = await ReviewsModel.findById({ _id: req.params.orderId })
-//         console.log(review)
-//         res.json(review);
-//     } catch (err) {
-//         res.status(500).send("Error retrieving order in reorder API GET");
-//     }
-//     });
-
 module.exports = reviewsRouter;

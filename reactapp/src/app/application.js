@@ -16,7 +16,7 @@ import CheckoutComponent from "./ApplicationComponents/Checkout/CheckoutComponen
 import CouponComponent from "./ApplicationComponents/Coupon/CouponComponent.js";
 import RecentOrders from "./ApplicationComponents/Orders/RecentOrders.js";
 import ReviewComponent from "./ApplicationComponents/Reviews/ReviewComponent.js";
-
+import NotificationButton from "./ApplicationComponents/Notification/NotificationButton.js";
 
 export default class ApplicationComponent extends Component {
 
