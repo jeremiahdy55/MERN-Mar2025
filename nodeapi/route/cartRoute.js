@@ -5,11 +5,11 @@ const CartModel = require('../DataModel/cartDataModel');
 // Add to cart or update quantity (one item)
 cartRouter.post("/api/saveCartItem", async (req, res) => {
     const { userId, product} = req.body;
-  
+    console.log({product})
     try {
       let cart = await CartModel.findOne({ userId });
-      let { productId, name, desc, rating, price, qty, category } = product;
-  
+      let {name, desc, rating, price, qty, category } = product;
+      let productId = product._id
       if (!cart) {
         cart = new CartModel({
           userId,
