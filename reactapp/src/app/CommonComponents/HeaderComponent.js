@@ -1,18 +1,27 @@
 import React from "react"; // this is responsible to parse the JSX code
 import { NavLink, useNavigate } from "react-router-dom";
-import { connect } from "react-redux"; //helps to connect react component with redux store
+import { connect, useDispatch } from "react-redux"; //helps to connect react component with redux store
 import NotificationButton from "../ApplicationComponents/Notification/NotificationButton";
+import { logoutUser } from "../State/LogoutAction";
 
 let Header = (props)=>{
     let user = props.user; //reading from mapStateToProps which reads from userReducer.user
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
         
     const usrName = user && user.userName ? user.userName : "";
 
     //navigate hook is used to create navigation link on the fly and send the request to given component
     const navigateHook = useNavigate();
-    const navigateWithName = ()=>{
-        navigateHook("/about/5000/Alec P.")
-    }
+    // const navigateWithName = ()=>{
+    //     navigateHook("/about/5000/Alec P.")
+    // }
+
+    const handleLogout = (e) => {
+        e.preventDefault(); // prevent NavLink default nav first
+        dispatch(logoutUser());
+        navigate("/logout");
+    };
 
     return(
         <>
@@ -35,8 +44,15 @@ let Header = (props)=>{
                             <NavLink to="/checkout" className="button" activeclassname="true"> Checkout </NavLink>
                             <NavLink to="/coupon" className="button" activeclassname="true"> Coupon </NavLink>
                             <NavLink to="/orders" className="button" activeclassname="true"> Orders </NavLink>
-                            <NavLink to="/reviews" className="button" activeclassname="true"> Reviews </NavLink>
-
+                            <NavLink to="/reviews" className="button" activeclassname="warning"> Reviews </NavLink>
+                            <NavLink
+                                to="/logout"
+                                className="button warning"
+                                activeclassname="true"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </NavLink>
 
                         </> : <></>
                 }

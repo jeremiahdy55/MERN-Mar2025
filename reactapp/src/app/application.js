@@ -16,7 +16,7 @@ import CheckoutComponent from "./ApplicationComponents/Checkout/CheckoutComponen
 import CouponComponent from "./ApplicationComponents/Coupon/CouponComponent.js";
 import RecentOrders from "./ApplicationComponents/Orders/RecentOrders.js";
 import ReviewComponent from "./ApplicationComponents/Reviews/ReviewComponent.js";
-import NotificationButton from "./ApplicationComponents/Notification/NotificationButton.js";
+import Logout from "./CommonComponents/LogoutComponent.js";
 
 export default class ApplicationComponent extends Component {
 
@@ -88,6 +88,9 @@ export default class ApplicationComponent extends Component {
                             <Route path="coupon" element={<CouponComponent />}/>
                             <Route path="orders" element={<RecentOrders />}/>
                             <Route path="reviews" element={<ReviewComponent />}/>
+
+                            <Route path="logout" element={<Logout />}/>
+
 
 
 
