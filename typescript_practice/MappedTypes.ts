@@ -4,7 +4,7 @@ from using an original type as base. Because they are a subset of TypeScript "ty
 they are erased after compilation and only exist inside the TypeScript code. (JavaScript cannot use them, it sees vanilla JS
 after transpilation).
 
-Useful for avoiding repition of similar but distinct type/design patterns.
+Useful for avoiding repetition of similar but distinct type/design patterns.
 */
 
 // Define original type

@@ -1,13 +1,12 @@
 "use strict";
 /*
-Decorators, similar to Java annotations, are prefixed with the "@" symbol before
-the signature/name. Decorators can only be declared or "decorate" things/code that exists after compile (i.e. during runtime)
+Decorators, similar to Java annotations, are prefixed with the "@" symbol.
+Decorators can only be declared or "decorate" things/code that exists after compile (i.e. during runtime)
 For this reason, they cannot "decorate" interfaces or types (these are erased and turned into vanilla JS after compile)
 and can only "decorate" classes.
 
 Similar to Spring AOP - decorators are commonly used for cross-cutting concerns
 such as logging, input validation, or security concerns
-
 
 Decorators can only be of four distinct types, denoted by adherence to an exact signature
 **** TypeScript v.4 or earlier
@@ -29,6 +28,11 @@ Decorators can only be of four distinct types, denoted by adherence to an exact 
    - This decorator takes three parameters: {target: Object, methodName: string, paramIndex: number}
    - function parameterDecorator(target: Object, methodName: string, paramIndex: number)
    - Called on any parameter it decorates at CLASS DEFINITION
+ - Accessor Decorator
+   - Placed on getters and setters only
+   - Can modify the property access logic
+   - function accessorDecorator(target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor)
+   - used with the get/set keywords and how TypeScript defines those accessor methods as different to regular methods
 
 *** TypeScript v.5 or later
 All decorators have a homogenized (value, context) signature.
@@ -55,27 +59,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+// NOTE: The following decorators follow the TypeScript4 or lower signatures, as the tsconfig.json is configured for older TypeScript!!!
 // =========================
 // CLASS DECORATOR
 // =========================
 function Logger(constructor) {
-    console.log("Logger decorator:", constructor.name);
+    console.log("Class decorator:", constructor.name);
     // Add version to prototype
     constructor.prototype.version = "1.0";
     // Must return nothing or the constructor itself
 }
 // =========================
 // PROPERTY DECORATORS
-// requires getters and setters
+// NOTE: requires getters and setters!!!
 // =========================
 function LogProperty(target, propertyKey) {
     let value = target[propertyKey];
     const getter = () => {
-        console.log(`Getting ${propertyKey}: ${value}`);
+        console.log(`Property decorator: Getting public field "${propertyKey}": ${value}`);
         return value;
     };
     const setter = (newVal) => {
-        console.log(`Setting ${propertyKey} to ${newVal}`);
+        console.log(`Property decorator: Setting public field "${propertyKey}" to ${newVal}`);
         value = newVal;
     };
     Object.defineProperty(target, propertyKey, {
@@ -85,6 +93,7 @@ function LogProperty(target, propertyKey) {
         configurable: true
     });
 }
+// creates a validation check on max character length on the property it "decorates"
 function MaxLength(length) {
     return function (target, propertyKey) {
         let value = target[propertyKey];
@@ -109,7 +118,7 @@ function MaxLength(length) {
 function LogMethod(target, propertyKey, descriptor) {
     const original = descriptor.value;
     descriptor.value = function (...args) {
-        console.log(`Calling ${propertyKey} with args:`, args);
+        console.log(`Method decorator: Calling ${propertyKey} with args:`, args);
         return original.apply(this, args);
     };
 }
@@ -117,18 +126,51 @@ function LogParams(target, propertyKey, descriptor) {
     const original = descriptor.value;
     descriptor.value = function (...args) {
         args.forEach((arg, index) => {
-            console.log(`Param ${index} of ${propertyKey}:`, arg);
+            console.log(`Method decorator: Param ${index} of ${propertyKey}:`, arg);
         });
         return original.apply(this, args);
     };
 }
 // =========================
+// PARAMETER DECORATORS
+// =========================
+function LogParamIndex(target, methodName, parameterIndex) {
+    console.log(`Parameter #${parameterIndex} of ${String(methodName)}() is decorated`);
+}
+// =========================
+// ACCESSOR DECORATORS
+// =========================
+function LogAccessor(target, key, descriptor) {
+    const originalGet = descriptor.get;
+    const originalSet = descriptor.set;
+    if (originalGet) {
+        descriptor.get = function () {
+            const value = originalGet.apply(this);
+            console.log(`Getter called for private field "${key}": ${value}`);
+            return value;
+        };
+    }
+    if (originalSet) {
+        descriptor.set = function (value) {
+            console.log(`Setter called for private field "${key}" to ${value}`);
+            return originalSet.apply(this, [value]);
+        };
+    }
+}
+// =========================
 // USER CLASS USING ALL DECORATORS
 // =========================
 let User = class User {
-    constructor(name, nickname) {
+    constructor(name, nickname, age) {
         this.name = name;
         this.nickname = nickname;
+        this._age = age;
+    }
+    get age() {
+        return this._age;
+    }
+    set age(age) {
+        this._age = age;
     }
     greet(message, count) {
         console.log(`${this.name} says: ${message} (${count})`);
@@ -146,28 +188,39 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "nickname", void 0);
 __decorate([
+    LogAccessor // @LogAccessor will see the same field name "age" and apply to both get/set methods
+    ,
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], User.prototype, "age", null);
+__decorate([
     LogMethod,
     LogParams,
+    __param(0, LogParamIndex),
+    __param(1, LogParamIndex),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Number]),
     __metadata("design:returntype", void 0)
 ], User.prototype, "greet", null);
 __decorate([
     LogMethod,
+    __param(0, LogParamIndex),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], User.prototype, "farewell", null);
 User = __decorate([
     Logger,
-    __metadata("design:paramtypes", [String, String])
+    __metadata("design:paramtypes", [String, String, Number])
 ], User);
 // =========================
 // USAGE
 // =========================
-const user = new User("Alice", "Al");
-user.name = "Bob"; // Logs get/set
-console.log(user.name); // Logs get
+const user = new User("Alice", "Al", 25);
+user.name = "Bob"; // Logs get/set of public field "name"
+console.log("This is from console.log: " + user.name); // Logs get of public field "name"
+user.age = 30;
+console.log("This is from console.log: " + user.age);
 user.nickname = "Short"; // OK
 // user.nickname = "TooLongNickname"; // Throws error
 user.greet("Hello", 2); // Logs method + params
