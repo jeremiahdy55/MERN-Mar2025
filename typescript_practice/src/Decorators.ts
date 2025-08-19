@@ -11,7 +11,7 @@ Decorators can only be of four distinct types, denoted by adherence to an exact 
 **** TypeScript v.4 or earlier
  - Method Decorator
    - This decorator takes three parameters: {target: Object, propertyKey: string | symbol, descript: PropertyDescriptor}
-   - function methodDecorator(target: object, propertyKey: string | symbol, descriptor: PropertyDescriptor)
+   - function methodDecorator(target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor)
    - This decorator is called when the class that has this this decorator on a method is DEFINED.
  - Class Decorator
    - This decorator takes a single parameter, the constructor function of a class
@@ -89,6 +89,7 @@ function LogProperty(target: any, propertyKey: string) {
 }
 
 // creates a validation check on max character length on the property it "decorates"
+// uses a wrapper of MaxLength() which returns a function
 function MaxLength(length: number) {
     return function (target: any, propertyKey: string) {
         let value: string = target[propertyKey];

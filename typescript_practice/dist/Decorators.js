@@ -12,7 +12,7 @@ Decorators can only be of four distinct types, denoted by adherence to an exact 
 **** TypeScript v.4 or earlier
  - Method Decorator
    - This decorator takes three parameters: {target: Object, propertyKey: string | symbol, descript: PropertyDescriptor}
-   - function methodDecorator(target: object, propertyKey: string | symbol, descriptor: PropertyDescriptor)
+   - function methodDecorator(target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor)
    - This decorator is called when the class that has this this decorator on a method is DEFINED.
  - Class Decorator
    - This decorator takes a single parameter, the constructor function of a class
@@ -146,13 +146,13 @@ function LogAccessor(target, key, descriptor) {
     if (originalGet) {
         descriptor.get = function () {
             const value = originalGet.apply(this);
-            console.log(`Getter called for private field "${key}": ${value}`);
+            console.log(`Accessor Decorator: Getter called for private field "${key}": ${value}`);
             return value;
         };
     }
     if (originalSet) {
         descriptor.set = function (value) {
-            console.log(`Setter called for private field "${key}" to ${value}`);
+            console.log(`Accessor Decorator: Setter called for private field "${key}" to ${value}`);
             return originalSet.apply(this, [value]);
         };
     }
@@ -222,7 +222,7 @@ console.log("This is from console.log: " + user.name); // Logs get of public fie
 user.age = 30;
 console.log("This is from console.log: " + user.age);
 user.nickname = "Short"; // OK
-// user.nickname = "TooLongNickname"; // Throws error
+user.nickname = "TooLongNickname"; // Throws error
 user.greet("Hello", 2); // Logs method + params
 user.farewell("Goodbye"); // Logs method
 console.log("Class version:", user.version); // Version added by class decorator
