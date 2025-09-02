@@ -1,0 +1,21 @@
+1. Angular is a component-based UI framework that provides multiple different features and a somewhat strict structure on how to build your frontend.
+   Some key features are services, dependendcy injection, component architecture, multiple ways of data binding HTML and TS elements, and extending HTML functionality with directives.
+
+2. Components in Angular are pairs of a TypeScript portion and an HTML portion. The TypeScript portion determines the logic and behavior of the component while the HTML template is
+   what is modified and served to the client. The TS portion would have things like routing behavior, API calls, and other basic computational logic, the output of which would behavior
+   rendered somewhow using a data binding method into the HTML template.
+
+3. Data binding is the key method of passing data from the TypeScript portion of a Component to the HTML template portion. There are four major methods of data binding:
+   interpolation (passing direct values to be printed, uses {{ }} )
+   property binding (passing values into the properties of HTML elements, uses [propertyName]="TypeScript variable to pass value from")
+   event binding (passing FUNCTIONS into the event properties (like onClick) of HTML elements, uses (HTML event name)="someFunction()")
+   two-way binding (syncs data changes between the client-side UI and the model, useful for forms, uses [( )])
+
+4. Angular scans and remembers any @Injectable classes in the program at compile time. Then, it will inject those classes wherever necessary when defined in another Component'(s) constructors.
+
+5. Directives in Angular are ways to extend HTML functionality by using custom code (Like with Spring or Java tag libraries in MVC .jsp files). For example, some useful directives are ngIf and ngFor, which
+   allow for conditional logic and iteration over a list of elements in the HTML template portion respectively.
+
+6. Components are the basic unit of the UI rendered by Angular. Modules are ways of grouping those components by form, function, or some other category determined by the programmer.
+
+7. 

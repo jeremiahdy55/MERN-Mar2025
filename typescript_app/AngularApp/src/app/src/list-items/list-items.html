@@ -1,0 +1,14 @@
+<p>list-items works!</p>
+<div>
+    <h2>Item List for August 29 Assessment</h2>
+
+    <input [(ngModel)]="newItem" placeholder="Please enter the new item"/>
+    <button (click)="addItem()"> Add the Item </button>
+
+    <!-- Unordered list of the items -->
+    <!-- Use directive *ngFor to iterate over {this.items},
+    then use interpolation {{  }} to print them -->
+    <ul>
+        <li *ngFor="let item of items"> {{ item }} </li>
+    </ul>
+</div>

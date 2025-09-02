@@ -1,0 +1,26 @@
+<p>home works!</p>
+
+<div>
+<h3>Using simple "count = count +|- 1"</h3>
+<button (click)="count = count + 1"> Increment</button>
+Current Count: {{ count }}
+<button (click)="count = count - 1"> Decrement</button>
+</div>
+
+<hr/>
+
+<div>
+<h3>Using functions handleIncrement() and handleDecrement()</h3>
+<button (click)="handleDecrement()"> Decrement</button>
+Current Count: {{ count2 }}
+<button (click)="handleIncrement()"> Increment</button>
+</div>
+
+<hr/>
+
+<div>
+    <h3> Using numberData with @Input decorator and numberDataChange with @Output decorator & EventEmitter</h3>
+    <button (click)="handleIncrement2()"> Increment</button>
+    <p><b>Number Data Value: {{ numberData }} </b></p>
+    <button (click)="handleDecrement2()"> Decrement</button>
+</div>
