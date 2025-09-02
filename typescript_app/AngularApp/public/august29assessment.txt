@@ -18,4 +18,4 @@
 
 6. Components are the basic unit of the UI rendered by Angular. Modules are ways of grouping those components by form, function, or some other category determined by the programmer.
 
-7. 
+7. See https://github.com/jeremiahdy55/MERN-Mar2025/tree/main/typescript_app/AngularApp/src/app/src/list-items
