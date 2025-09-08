@@ -1,0 +1,47 @@
+<p>home works!</p>
+<!-- NOTE: DO NOT REUSE VARIABLE NAMES ACROSS DIFFERENT DIRECTIVES
+     ex. "let user of users" and "let user of data" IS NOT ALLOWED
+        why? -> the {user} variable is in both loop-statements, and will confuse Angular -->
+<ul>
+    <li *ngFor="let item of items">{{ item }}</li>
+</ul>
+<br>
+<ul>
+    <li *ngFor="let user of users">
+        {{ user.userName }},  {{ user.street }},  {{ user.mobile }}
+    </li>
+</ul>
+<br>
+
+<input [(ngModel)]="username" placeholder="Please enter the new user's username" style="width: 300px;"/>
+<br>
+<input [(ngModel)]="password" placeholder="Please enter the new user's password" style="width: 300px;"/>
+<br>
+<button (click)="createNewUser()"> Create the new user (send to shopping cart project) </button>
+
+<hr>
+
+<div>
+<h3>Using simple "count = count +|- 1"</h3>
+<button (click)="count = count + 1"> Increment</button>
+Current Count: {{ count }}
+<button (click)="count = count - 1"> Decrement</button>
+</div>
+
+<hr/>
+
+<div>
+<h3>Using functions handleIncrement() and handleDecrement()</h3>
+<button (click)="handleDecrement()"> Decrement</button>
+Current Count: {{ count2 }}
+<button (click)="handleIncrement()"> Increment</button>
+</div>
+
+<hr/>
+
+<div>
+    <h3> Using numberData with @Input decorator and numberDataChange with @Output decorator & EventEmitter</h3>
+    <button (click)="handleIncrement2()"> Increment</button>
+    <p><b>Number Data Value: {{ numberData }} </b></p>
+    <button (click)="handleDecrement2()"> Decrement</button>
+</div>
